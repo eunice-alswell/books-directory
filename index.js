@@ -1,24 +1,30 @@
+//modules
 require('dotenv').config()
 
 const express = require('express')
-
 const mongoose = require('mongoose')
 
 const app = express()
 
+const dbLink = process.env.DBLINK
 const port = process.env.PORT
-const db = process.env.DB
+const userRoute = require('./src/routes/userRoute')
 
-mongoose.connect(db,{
-    useNewUrlParser:true,
-    useUnifiedTopology: true
-},()=>{
-    app.listen(port,()=>{
-        console.info('APPLICATION HAS STARTED')
+// database connection
+mongoose.connect(dbLink,{useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true},() => {
+    app.listen(port,() =>{
+        console.info('APP HAS STARTED')
     })
 })
 
-app.get('/',(req,res)=>{
-    console.log("<h1>Hi,there!!!!</h1>")
-})
+//middleware
+app.use(express.json())
 
+//routes
+app.use(userRoute)
+
+// app.use(express.static('public'))
+
+app.get('/',(req,res) => {
+    res.status(200).send('<h1>Hey, there!!</h1>')
+})
