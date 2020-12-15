@@ -1,18 +1,8 @@
 const mongoose = require('mongoose');
 const  bcrypt = require('bcrypt') 
 
-const userSchema = new mongoose.Schema({
-    firstname:{
-        type:String,
-        required:[true,'please enter your firstname'],
-        lowercase : true
-    },
-    lastname:{
-        type:String,
-        required:[true,'please enter your lastname'],
-        lowercase : true
-    },
-    username: {
+const authorSchema = new mongoose.Schema({
+    name: {
         type:String,
         minlength: [5, 'minimum username length is 5' ],
         maxlength: [16, 'maximum username length is 16'],
@@ -34,17 +24,22 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         Enumerator:['admin']
+    },
+    book:{
+        type:Array,
+        required:[true,'please author should have a book'],
+        lowercase:true
     }
 })
 
 
-const User = mongoose.model('user',userSchema)
+const Author = mongoose.model('author',authorSchema)
 
-userSchema.pre('save', async function(next){
+authorSchema.pre('save', async function(next){
         const salt = bcrypt.genSalt()
         this.password = await bcrypt.hash(this.password,salt)
         console.log(this.password)
     next()
 })
 
-module.exports = User
+module.exports = Author

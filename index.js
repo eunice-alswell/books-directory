@@ -8,7 +8,8 @@ const app = express()
 
 const dbLink = process.env.DBLINK
 const port = process.env.PORT
-const userRoute = require('./src/routes/userRoute')
+const authorRoute = require('./src/routes/authorRoute')
+const bookRoute = require('./src/routes/bookRoute')
 
 // database connection
 mongoose.connect(dbLink,{useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true},() => {
@@ -21,7 +22,8 @@ mongoose.connect(dbLink,{useNewUrlParser: true, useUnifiedTopology: true, useCre
 app.use(express.json())
 
 //routes
-app.use(userRoute)
+app.use(authorRoute)
+app.use(bookRoute)
 
 // app.use(express.static('public'))
 
